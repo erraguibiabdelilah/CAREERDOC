@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('parcours', function (Blueprint $table) {
-            $table->id('id_parcours');
-            $table->date('date_debut');
-            $table->date('date_fin');
-            $table->string('etablissement');
-            $table->string('libelle_diplome');
-            $table->foreignId('id_cv')->constrained('cvs', 'id_cv');
+        Schema::create('experiences', function (Blueprint $table) {
+            $table->id();
+            $table->date('dateDebut');
+            $table->date('dateFin');
+            $table->string('entreprise');
+            $table->string('poste');
+            $table->foreignId('id_cv')->constrained('cvs', 'id');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('parcours');
+        Schema::dropIfExists('experiences');
     }
 };

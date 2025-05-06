@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('templates', function (Blueprint $table) {
-            $table->id('id_template');
-            $table->text('contenu');
+        Schema::create('competances', function (Blueprint $table) {
+            $table->id();
+            $table->string('libelle');
+            $table->foreignId('id_cv')->constrained('cvs', 'id');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('templates');
+        Schema::dropIfExists('competances');
     }
 };

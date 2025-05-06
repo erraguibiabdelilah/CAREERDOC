@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lettres', function (Blueprint $table) {
-            $table->id('id_lettre');
-            $table->date('date');
-            $table->string('emetteur');
-            $table->string('destinateur');
-            $table->string('objet');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->id();
             $table->text('contenu');
-            $table->string('adresse_emetteur');
-            $table->foreignId('id_personne')->constrained('personnes', 'id_personne');
+            $table->boolean('estLu')->default(FALSE);
+            $table->foreignId('id_user')->constrained('users', 'id');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lettres');
+        Schema::dropIfExists('notifications');
     }
 };

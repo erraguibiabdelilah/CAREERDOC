@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('langues', function (Blueprint $table) {
-            $table->id('id_langue');
-            $table->string('libelle_langue');
-            $table->string('niveau');
-            $table->foreignId('id_cv')->constrained('cvs', 'id_cv');
+        Schema::create('formations', function (Blueprint $table) {
+            $table->id();
+            $table->date('dateDebut');
+            $table->date('dateFin');
+            $table->string('etablissement');
+            $table->string('libelle');
+            $table->foreignId('id_cv')->constrained('cvs', 'id');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('langues');
+        Schema::dropIfExists('formations');
     }
 };

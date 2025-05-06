@@ -12,18 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cvs', function (Blueprint $table) {
-            $table->id('id_cv');
+            $table->id();
             $table->string('nom');
             $table->string('prenom');
             $table->integer('age');
             $table->string('adresse');
-            $table->string('tele');
+            $table->string('tel');
+            $table->text('profile');
             $table->string('gmail');
-            $table->string('lien_github')->nullable();
-            $table->string('lien_linkedin')->nullable();
-            $table->text('competences');
+            $table->string('lienGithub')->nullable();
+            $table->string('lienLinkedin')->nullable();
             $table->string('image')->nullable();
-            $table->foreignId('id_personne')->constrained('personnes', 'id_personne');
+            $table->foreignId('id_user')->constrained('users', 'id');
             $table->timestamps();
         });
     }
