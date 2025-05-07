@@ -18,11 +18,11 @@ class GenrateCoverLetter extends Controller
     /**
      * Traite la requête vers l'API Azure OpenAI pour générer une lettre de motivation à partir d'un texte.
      */
-    public function processChat(Request $request)
+    public function generate(Request $request)
     {
-        // Valider la requête, on attend un champ "user_text"
+        // Valider la requête, on attend un champ "description"
         $data = $request->validate([
-            'user_text' => 'required|string',
+            'description' => 'required|string',
         ]);
 
         // Créer le tableau de messages pour l'API
@@ -33,7 +33,7 @@ class GenrateCoverLetter extends Controller
             ],
             [
                 'role' => 'user',
-                'content' => $data['user_text']
+                'content' => $data['description']
             ]
         ];
 
@@ -43,7 +43,7 @@ class GenrateCoverLetter extends Controller
         // Configuration Azure OpenAI
         $azureEndpoint = 'https://models.inference.ai.azure.com/chat/completions';
         $model = 'DeepSeek-V3-0324';
-        $temperature = 0.7; // Température légèrement plus élevée pour la créativité
+        $temperature = 0.7;
         $top_p = 0.9;
         $max_tokens = 4000;
 
@@ -55,7 +55,6 @@ class GenrateCoverLetter extends Controller
             'top_p' => $top_p,
             'max_tokens' => $max_tokens,
             'presence_penalty' => 0.3,
-            // Suppression du format JSON pour retourner du texte brut
         ];
 
         try {
@@ -65,48 +64,69 @@ class GenrateCoverLetter extends Controller
                 'Authorization' => 'Bearer '.$apiKey,
             ])->post($azureEndpoint, $payload);
 
-            // Déboguer la réponse brute de l'API
-            $apiResult = $response->json();
-
             // Si la requête a échoué, retourner l'erreur
             if ($response->failed()) {
-                return view('generateCover', [
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'La requête à l\'API Azure OpenAI a échoué.',
+                        'details' => $response->json()
+                    ], 500);
+                }
+
+                return view('page.generateCover', [
                     'error' => 'La requête à l\'API Azure OpenAI a échoué.',
-                    'details' => $apiResult,
-                    'user_text' => $data['user_text'] // Renvoyer le texte saisi pour éviter de le perdre
+                    'details' => $response->json(),
+                    'description' => $data['description']
                 ]);
             }
 
-            // Extraire le contenu de la réponse (texte de la lettre de motivation)
+            // Extraire le contenu de la réponse
+            $apiResult = $response->json();
             $coverLetterText = null;
+
             if (isset($apiResult['choices'][0]['message']['content'])) {
                 $coverLetterText = $apiResult['choices'][0]['message']['content'];
             } else {
-                return view('generateCover', [
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Format de réponse inattendu de l\'API.',
+                        'details' => $apiResult
+                    ], 500);
+                }
+
+                return view('page.generateCover', [
                     'error' => 'Format de réponse inattendu de l\'API.',
-                    'api_result' => $apiResult,
-                    'user_text' => $data['user_text']
+                    'details' => $apiResult,
+                    'description' => $data['description']
                 ]);
             }
 
-            // Si on attend une réponse JSON (requête AJAX)
+            // Si c'est une requête AJAX, retourner uniquement le texte de la lettre
             if ($request->expectsJson()) {
                 return response()->json([
                     'status' => 'success',
-                    'coverLetter' => $coverLetterText
+                    'text' => $coverLetterText
                 ]);
             }
 
-            // Sinon, on retourne la vue avec le texte de la lettre de motivation
-            return view('generateCover', [
-                'coverLetter' => $coverLetterText,
-                'user_text' => $data['user_text']
+            // Sinon, retourner la vue avec le texte de la lettre
+            return view('page.generateCover', [
+                'coverLetterText' => $coverLetterText,
+                'description' => $data['description']
             ]);
         } catch (\Exception $e) {
-            // Gérer les exceptions
-            return view('generateCover', [
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Une erreur est survenue: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return view('page.generateCover', [
                 'error' => 'Une erreur est survenue: ' . $e->getMessage(),
-                'user_text' => $data['user_text']
+                'description' => $data['description']
             ]);
         }
     }
@@ -117,27 +137,27 @@ class GenrateCoverLetter extends Controller
     private function buildSystemPrompt()
     {
         return <<<EOT
-    Tu es un expert en rédaction professionnelle spécialisé dans les lettres de motivation.
+Tu es un expert en rédaction professionnelle spécialisé dans les lettres de motivation.
 
-    Ta tâche est d'analyser les informations fournies par l'utilisateur et de générer une lettre de motivation complète,
-    persuasive et personnalisée en français.
+Ta tâche est d'analyser les informations fournies par l'utilisateur et de générer une lettre de motivation complète,
+persuasive et personnalisée en français.
 
-    L'utilisateur va te fournir des informations sur son profil professionnel, ses compétences, l'entreprise visée
-    et/ou le poste convoité. À partir de ces éléments, tu dois rédiger une lettre de motivation complète.
+L'utilisateur va te fournir des informations sur son profil professionnel, ses compétences, l'entreprise visée
+et/ou le poste convoité. À partir de ces éléments, tu dois rédiger une lettre de motivation complète.
 
-    RÈGLES IMPORTANTES:
-    - Élabore une lettre de motivation structurée avec introduction, développement et conclusion
-    - Mets en avant les compétences et expériences pertinentes pour le poste visé
-    - Explique la motivation du candidat et sa valeur ajoutée pour l'entreprise
-    - Adopte un ton professionnel mais engageant
-    - Personnalise la lettre en fonction des informations spécifiques fournies
-    - Limite la longueur à environ 350-450 mots
-    - N'invente pas d'informations qui ne sont pas présentes dans le texte fourni
-    - Ne demande pas d'informations supplémentaires
-    - Retourne uniquement le texte de la lettre, sans formatage particulier
-    - N'inclus pas d'en-tête ni signature, seulement le corps de la lettre
+RÈGLES IMPORTANTES:
+- Élabore une lettre de motivation structurée avec introduction, développement et conclusion
+- Mets en avant les compétences et expériences pertinentes pour le poste visé
+- Explique la motivation du candidat et sa valeur ajoutée pour l'entreprise
+- Adopte un ton professionnel mais engageant
+- Personnalise la lettre en fonction des informations spécifiques fournies
+- Limite la longueur à environ 350-450 mots
+- N'invente pas d'informations qui ne sont pas présentes dans le texte fourni
+- Retourne uniquement le texte de la lettre, sans formatage particulier
+- N'inclus pas d'en-tête ni signature, seulement le corps de la
+-- Ne génère pas de ligne d'objet (ex. "Objet : ...") ni de titre
 
-    Réponds UNIQUEMENT avec le texte de la lettre de motivation, sans aucun commentaire ou explication.
-    EOT;
+Réponds UNIQUEMENT avec le texte de la lettre de motivation, sans aucun commentaire ou explication.
+EOT;
     }
 }

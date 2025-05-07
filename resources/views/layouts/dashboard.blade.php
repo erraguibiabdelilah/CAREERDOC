@@ -211,6 +211,21 @@
         i  {
             color: #01096F;
         }
+
+        .btn-btn{
+            color: white;
+            background-color: #01096F;
+        }
+        .btn-btn:hover{
+            color:#01096F;
+            background-color:white;
+            border-color:  #01096F;
+        }
+
+        .modal-style{
+            border: none;
+            box-shadow: 0 5px 5px rgba(2, 12, 104, 0.541);
+        }
     </style>
 </head>
 <body>
@@ -379,7 +394,7 @@
 
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3">
+                                <a class="mb-3" href="{{ redirect('/cover') }}">
                                     <i class="bi bi-robot fs-1  bleu"></i>
                                     <h5 class="text-dark">Générer avec l'IA</h5>
                                 </a>
@@ -408,7 +423,7 @@
                     <div class="row conatiner mb-5">
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3">
+                                <a class="mb-3" href="{{ route('coverWithModel') }}">
                                     <i class="bi bi-briefcase fs-1 bleu"></i>
                                     <h5 class="text-dark">Commencer avec un modèle</h5>
                                 </a>
@@ -418,7 +433,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3">
+                                <a class="mb-3" type="button" class="btn btn-primary btn-open-modal" data-bs-toggle="modal" data-bs-target="#coverLetterModal">
                                     <i class="bi bi-robot fs-1 bleu"></i>
                                     <h5 class="text-dark">Générer avec l'IA</h5>
                                 </a>
@@ -433,6 +448,49 @@
             </div>
         </div>
     </div>
+
+
+        <!-- Modal pour le générateur -->
+        <div class="modal fade " id="coverLetterModal" tabindex="-1" aria-labelledby="coverLetterModalLabel" aria-hidden="true">
+            <div class="modal-dialog   modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        <!-- Messages d'erreur -->
+                        @if(isset($error))
+                            <div class="alert alert-danger">{{ $error }}</div>
+                        @endif
+
+                        <!-- Formulaire -->
+                        <form id="coverLetterForm" action="{{ route('coverGenerate') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Décrivez votre profil et le poste visé:</label>
+                                <textarea class="form-control" id="description" name="description" rows="6" required>{{ $description ?? '' }}</textarea>
+                                <div class="form-text">
+                                    Incluez vos compétences, expériences, le poste et l'entreprise visés.
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-btn">Générer la lettre</button>
+                            </div>
+                        </form>
+
+                        <!-- Résultat (initialement caché) -->
+                        <div id="resultContainer" class="mt-4" style="display: none;">
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="mb-0">Votre Lettre de Motivation</h4>
+                                <button class="btn btn-sm btn-outline-primary" onclick="copyText()">Copier</button>
+                            </div>
+                            <div class="bg-light p-3 rounded" id="coverLetterResult"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>

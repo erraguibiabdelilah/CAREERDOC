@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('lettres', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->string('emetteur');
-            $table->string('destinataire');
+            $table->string('lieuEtDate');
+            $table->string('nomEmetteur');
+            $table->string('pronomEmetteur');
+            $table->string('email');
+            $table->string('tel');
+            $table->string('adresseEmetteur');
+            $table->string('entrDestinataire');
+            $table->string('adresseEntreprise');
             $table->string('objet');
             $table->text('contenu');
-            $table->string('adresseEmetteur');
-            $table->string('email');
+            $table->string('signature');
             $table->foreignId('id_user')->constrained('users', 'id');
             $table->timestamps();
         });

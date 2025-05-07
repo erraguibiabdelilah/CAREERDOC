@@ -24,6 +24,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'openai' =>[
+        'key' => getenv('GITHUB_TOKEN') ?: env('GITHUB_TOKEN'),
+    ],
+
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],

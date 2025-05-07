@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('lienLinkedin')->nullable();
             $table->string('image')->nullable();
             $table->foreignId('id_user')->constrained('users', 'id');
+            $table->foreignId('id_template')->constrained('users', 'id');
             $table->timestamps();
         });
     }

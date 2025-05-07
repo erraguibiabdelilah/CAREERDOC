@@ -8,6 +8,11 @@ use App\Models\User;
 //landign page
 Route::get('/', function () {return view('layouts.landignPage');});
 
+Route::get('/GenerateCover', function () {return view('page.generateCover');})->name('cover');
+Route::get('/CreateCover', function () {return view('page.coverWithModel');})->name('coverWithModel');
+Route::post('/cover/generate', [GenrateCoverLetter::class, 'generate'])->name('coverGenerate');
+
+
 // Routes d'authentification
 Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -17,7 +22,7 @@ Route::match(['get', 'post'], '/logout',[AuthController::class, 'logout'])->name
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {return view('layouts.dashboard');});
+    Route::get('/dashboard', function () {return view('layouts.dashboard');})->name('dashboard');
 
     // Routes admin
 
@@ -25,14 +30,27 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::get('/chat', function () {return view('chat');});
+
 Route::post('/openai/chat', [\App\Http\Controllers\OpenAiController::class, 'processChat'])->name('openai.chat');
 Route::get('/auto', [AutoGenerate::class, 'showForm'])->name('home');
 Route::post('/generate-cv', [AutoGenerate::class, 'processChat'])->name('openai.autoCV');
 
-Route::get('/form', [GenrateCoverLetter::class, 'showForm'])->name('cover.form');
+// Routes pour la génération de lettre de motivation
 
 // Route pour traiter la soumission du formulaire
-Route::post('/CoverGenerate', [GenrateCoverLetter::class, 'processChat'])->name('CoverGenerate');
+
+
+Route::get('/page/cv',function(){ return view('page.cv');});
+
+
+
+
+
+
+    Route::get('/page/myDocuments', function () {return view('page.myDoc');});
+   Route::get('/page/NewCoverLetter', function () {return view('page.coverletter');});
+
+
 
 
 
