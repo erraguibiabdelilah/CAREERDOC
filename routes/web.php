@@ -33,14 +33,15 @@ Route::get('/chat', function () {return view('chat');});
 
 Route::post('/openai/chat', [\App\Http\Controllers\OpenAiController::class, 'processChat'])->name('openai.chat');
 Route::get('/auto', [AutoGenerate::class, 'showForm'])->name('home');
-Route::post('/generate-cv', [AutoGenerate::class, 'processChat'])->name('openai.autoCV');
+Route::post('/generate-cv', [AutoGenerate::class, 'generate'])->name('autoCV');
 
 // Routes pour la génération de lettre de motivation
 
 // Route pour traiter la soumission du formulaire
 
-
-Route::get('/page/cv',function(){ return view('page.cv');});
+Route::get('/Generate/CV', function(){
+    return view('page.cv');
+})->name('generateCV');
 
 
 

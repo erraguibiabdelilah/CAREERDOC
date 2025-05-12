@@ -285,12 +285,23 @@
                     <div class="cv-content">
                         <div class="cv-section">
                             <h3 class="cv-section-title">Informations personnelles</h3>
-                            <p id="previewDescription">Professionnel dynamique avec une solide expérience dans divers secteurs, désireux de relever de nouveaux défis. Capable de travailler en équipe et de s'adapter rapidement aux environnements en constante évolution pour atteindre les objectifs fixés.</p>
+                            <p id="previewDescription">
+                                @if (isset($cvJsonText))
+                                    {{$cvJsonText->profile}}
+                                @endif
+
+                                @else
+                                Professionnel dynamique avec une solide expérience dans divers secteurs, désireux de relever de nouveaux défis. Capable de travailler en équipe et de s'adapter rapidement aux environnements en constante évolution pour atteindre les objectifs fixés.
+
+                                @endforelse
+                            </p>
                         </div>
 
                         <div class="cv-section">
                             <h3 class="cv-section-title">Formation</h3>
                             <div class="education-item">
+
+
                                 <h5 id="previewSchool">Université de Paris</h5>
                                 <div class="date-location">
                                     <span id="previewEduDates">2018 - 2020</span> | <span id="previewEduLocation">Paris, France</span>

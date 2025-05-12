@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
-            $table->date('dateDebut');
-            $table->date('dateFin');
+            $table->string('period');
             $table->string('entreprise');
             $table->string('poste');
             $table->foreignId('id_cv')->constrained('cvs', 'id');

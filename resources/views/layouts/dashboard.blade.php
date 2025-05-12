@@ -6,227 +6,8 @@
     <title>CV Designer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f0f2f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    <link rel="stylesheet" href="{{ asset('css/dash.css') }}">
 
-        .sidebar {
-            background-color: white;
-            min-height: 100vh;
-            box-shadow: 4px 0 10px rgba(0, 0, 255, 0.1);
-            padding: 20px 0;
-            position: fixed;
-            width: 250px;
-        }
-
-        .content-area {
-            background-color: white;
-            min-height: 100vh;
-            border-radius: 10px;
-            padding: 20px;
-            margin-left: 270px;
-            margin-right: 20px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .sidebar-logo {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 20px;
-        }
-
-        .nav-link {
-            color: #5b5b5b;
-            padding: 10px 20px;
-            margin: 5px 0;
-            transition: all 0.3s;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background-color: #f5f7ff;
-            color: #01096F;;
-            border-left: 3px solid #4c6ef5;
-
-        }
-
-        .nav-link i {
-            margin-right: 10px;
-        }
-
-        .tab-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-button {
-            border: none;
-            background: none;
-            color: #777;
-            font-weight: 500;
-            padding: 10px 15px;
-            margin-right: 10px;
-        }
-
-        .tab-button.active {
-            color: #01096F;
-            border-bottom: 2px solid #4c6ef5;
-
-        }
-
-        .template-card {
-            background-color: white;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .template-card:hover {
-            box-shadow: 0 5px 5px rgba(0, 4, 39, 0.541);
-        }
-
-        .btn-primary {
-            background-color: #4c6ef5;
-            border-color: #4c6ef5;
-        }
-
-        .btn-outline-primary {
-            color: #4c6ef5;
-            border-color: #4c6ef5;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: #4c6ef5;
-            color: white;
-        }
-
-        .profile-icon {
-            width: 32px;
-            height: 32px;
-            background-color: #01096F;
-            border-radius: 50%;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .template-preview {
-            height: 100px;
-            width: 100%;
-            background-color: #f8f9fa;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #bdbdbd;
-        }
-
-        .resume-item {
-            background-color: white;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .resume-item .title {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .resume-item .date {
-            font-size: 12px;
-            color: #777;
-        }
-
-        .notification-badge {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-badge::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 8px;
-            height: 8px;
-            background-color: #ff4757;
-            border-radius: 50%;
-        }
-
-        .notification-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .notification-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-item i {
-            margin-right: 10px;
-            width: 16px;
-        }
-
-        a{
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .modal-card{
-           border: none;
-           box-shadow: 0 5px 5px rgba(0, 4, 39, 0.541);
-        }
-
-        .logo-span{
-            color: #01096F;
-            font-size: 24px;
-            position: relative;
-            top: 6px;
-            font-weight: bold;
-            font-family: math;
-        }
-
-        .bleu{
-            color: #01096F;
-        }
-        i  {
-            color: #01096F;
-        }
-
-        .btn-btn{
-            color: white;
-            background-color: #01096F;
-        }
-        .btn-btn:hover{
-            color:#01096F;
-            background-color:white;
-            border-color:  #01096F;
-        }
-
-        .modal-style{
-            border: none;
-            box-shadow: 0 5px 5px rgba(2, 12, 104, 0.541);
-        }
-    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -382,7 +163,7 @@
                     <div class="row container mb-5">
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3">
+                                <a class="mb-3" href="{{ route('generateCV') }}">
                                     <i class="bi bi-file-earmark-plus fs-1  bleu"></i>
                                     <h5 class="text-dark">Commencer avec un modèle</h5>
                                 </a>
@@ -394,7 +175,7 @@
 
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3" href="{{ redirect('/cover') }}">
+                                <a class="mb-3" type="button" class="btn btn-primary btn-open-modal" data-bs-toggle="modal" data-bs-target="#CVLetterModal">
                                     <i class="bi bi-robot fs-1  bleu"></i>
                                     <h5 class="text-dark">Générer avec l'IA</h5>
                                 </a>
@@ -450,19 +231,14 @@
     </div>
 
 
-        <!-- Modal pour le générateur -->
+        <!-- Modal pour le générateur des lettres de motivations  -->
         <div class="modal fade " id="coverLetterModal" tabindex="-1" aria-labelledby="coverLetterModalLabel" aria-hidden="true">
             <div class="modal-dialog   modal-lg">
                 <div class="modal-content">
 
                     <div class="modal-body">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                        <!-- Messages d'erreur -->
-                        @if(isset($error))
-                            <div class="alert alert-danger">{{ $error }}</div>
-                        @endif
 
-                        <!-- Formulaire -->
                         <form id="coverLetterForm" action="{{ route('coverGenerate') }}" method="POST">
                             @csrf
                             <div class="mb-3">
@@ -477,20 +253,44 @@
                             </div>
                         </form>
 
-                        <!-- Résultat (initialement caché) -->
-                        <div id="resultContainer" class="mt-4" style="display: none;">
-                            <hr>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h4 class="mb-0">Votre Lettre de Motivation</h4>
-                                <button class="btn btn-sm btn-outline-primary" onclick="copyText()">Copier</button>
-                            </div>
-                            <div class="bg-light p-3 rounded" id="coverLetterResult"></div>
-                        </div>
+
                     </div>
 
                 </div>
             </div>
         </div>
+
+
+
+
+                <!-- Modal pour le générateur des cvs  -->
+                <div class="modal fade " id="CVLetterModal" tabindex="-1" aria-labelledby="CVModalLabel" aria-hidden="true">
+                    <div class="modal-dialog   modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+
+                                <form id="coverLetterForm" action="{{ route('autoCV') }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Décrivez votre profil et le poste visé:</label>
+                                        <textarea class="form-control" id="description" name="description" rows="6" required>{{ $description ?? '' }}</textarea>
+                                        <div class="form-text">
+                                            Incluez vos compétences, expériences, le poste et l'entreprise visés.
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-btn">Générer Votre CV</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>

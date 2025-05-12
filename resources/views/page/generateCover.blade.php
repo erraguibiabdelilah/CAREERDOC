@@ -261,7 +261,7 @@
             </div>
 
             <!-- Colonne de droite avec aperçu de la lettre -->
-            <div class="col-lg-6">
+            <div class="result  col-lg-6">
                 <div class="lettre-preview">
                     <div class="expediteur-info">
                         <div id="previewNomPrenom">Ana MUÑOZ MUT</div>
@@ -275,7 +275,7 @@
                         <div id="previewAdresseEntreprise">81 Boulevard de Sébastopol</div>
                     </div>
                     Objet :<span id="previewObjet">demande de stage </span>
-                    
+
 
                     <div class="date" id="previewLieuDate">Paris, le Mardi 1 Avril 2014</div>
 
