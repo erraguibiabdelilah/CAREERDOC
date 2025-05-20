@@ -4,13 +4,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AutoGenerate;
 use App\Http\Controllers\GenrateCoverLetter;
+use App\Http\Controllers\GenerateJobRequest;
 use App\Models\User;
+//landign page
+
+Route::post('/lettre/store', [LettreController::class, 'store'])->name('lettre.store')->middleware('auth');
+Route::post('/jobRequest/store', [JobRequestController::class, 'store'])->name('JobRequest.store')->middleware('auth');
 //landign page
 Route::get('/', function () {return view('layouts.landignPage');});
 
+
 Route::get('/GenerateCover', function () {return view('page.generateCover');})->name('cover');
 Route::get('/CreateCover', function () {return view('page.coverWithModel');})->name('coverWithModel');
-Route::post('/cover/generate', [GenrateCoverLetter::class, 'generate'])->name('coverGenerate');
+Route::match(['get', 'post'],'/cover/generate', [GenrateCoverLetter::class, 'generate'])->name('coverGenerate');
+
+
+Route::get('/GenerateJobLetter', function () { return view('page.generateJobRequest');})->name('JobRequest');
+Route::get('/CreateJobRequest', function () { return view('page.jobRequestWithModel');})->name('jobLetterWithModel');
+Route::match(['get', 'post'],'/jobLetter/generate', [GenerateJobRequest::class, 'generate'])->name('jobLetterGenerate');
 
 
 // Routes d'authentification
@@ -22,11 +33,14 @@ Route::match(['get', 'post'], '/logout',[AuthController::class, 'logout'])->name
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {return view('layouts.dashboard');})->name('dashboard');
-
-    // Routes admin
 
     Route::get('/admin/dashboard',[AuthController::class , 'adminDashboard'])->name('adminDashboard');
+    Route::prefix('page')->group(function () {
+    Route::get('/myDocument', function(){ return view('page.dashboard');})->name('dashboard');
+    Route::get('/newCoverLetter',function(){ return view('page.newCover');})->name('coverLetter');
+    Route::get('/newResume',function(){ return view('page.newResume');})->name('resume');
+    Route::get('/page/NewJobLetter', function () {return view('page.newJobLetter');})->name('newJobLetter');
+});
 
 });
 Route::get('/chat', function () {return view('chat');});
@@ -48,8 +62,10 @@ Route::get('/Generate/CV', function(){
 
 
 
-    Route::get('/page/myDocuments', function () {return view('page.myDoc');});
-   Route::get('/page/NewCoverLetter', function () {return view('page.coverletter');});
+Route::get('/cvWithModel', function(){
+    return view('cv.personalInfo');
+})->name('cvWithModel');
+
 
 
 

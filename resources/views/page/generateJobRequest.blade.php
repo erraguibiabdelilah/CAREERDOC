@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -101,7 +102,6 @@
             .btn-print, .btn-ai, .btn-save, .btn-tips {
                 display: none;
             }
-
         }
 
         .goback{
@@ -116,12 +116,10 @@
     </style>
 </head>
 <body>
-    <a class="goback mx-3  my-3" href="{{ route('dashboard') }}"> <i class="bi bi-arrow-left-circle"></i> Go Back</a>
-    <div class="container-fluid py-4">
 
+    <div class="container-fluid py-4">
+        <a class="goback mx-3 p-2" href="{{ route('dashboard') }}"> <i class="bi bi-arrow-left-circle"></i> Go Back</a>
         <div class="row">
-            <form action="{{ route('lettre.store') }}" method="POST">
-                @csrf
             <!-- Colonne de gauche avec formulaires -->
             <div class="col-lg-6 col-form">
                     <!-- Section Expéditeur -->
@@ -220,12 +218,12 @@
                         </div>
                         <div id="contenuForm" class="collapse show">
                             <div class="card-body">
+
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="objet" placeholder="Objet" value="demande de stage">
                                     <label for="objet">objet</label>
 
                                 </div>
-
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="formule" placeholder="Formule de politesse" value="Madame, Monsieur,">
                                     <label for="formule">Formule de politesse</label>
@@ -234,14 +232,11 @@
                                     <div class="mb-3">
                                         <label for="contenuLettre" class="form-label">Contenu de la lettre</label>
                                         <textarea class="form-control" id="contenuLettre" name="contenuLettre" rows="10">
-                                                     Actuellement étudiant Affaires Internationales à l'École Supérieure de Commerce Extérieur, je suis à la recherche d'un stage de 5-6 mois au sein d'un établissement bancaire de renommée internationale tel que l'est le vôtre. Je me permets donc de vous proposer mes services.
-
-                                        L'enseignement que je reçois me prépare à accéder aux différents décisions stratégiques en matière de finance, être ouverte aux autres, soucieuse de me perfectionner. Je sais m'adapter et ai le sens des responsabilités, de l'organisation et de la rigueur, pratiquant trois langues étrangères, j'ai un désir très profond de réussir mon insertion professionnelle, permettant ainsi mon épanouissement aussi bien sur le plan personnel qu'au sein de la société.
-
-                                        Faire mon stage au sein de votre établissement serait une grande opportunité de développer mes compétences et serait pour moi la manière la plus efficace de valider ma formation et mon expérience. La formation qui me sera dispensée en alternance sera pour moi l'occasion d'acquérir les savoirs théoriques et pratiques nécessaires pour assurer correctement les tâches qui me seront confiées. Je me tiens à votre disposition pour vous fournir tout complément d'information ou convenir d'une date d'entretien.
-
-                                        En espérant que vous répondrez favorablement à ma demande, je vous prie de croire, Madame, Monsieur, à l'assurance de mes salutations distinguées.
+                                        @if(isset($coverLetterText))
+                                                        {{ $coverLetterText }}
+                                        @endif
                                         </textarea>
+
                                     </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="signature" placeholder="Signature" value="Ana Muñoz Mut">
@@ -257,7 +252,7 @@
                     <!-- Boutons d'action -->
                     <div class="d-flex justify-content-between mb-4">
                         <div>
-                            <button class="btn btn-success btn-save me-2" type="submit">
+                            <button class="btn btn-success btn-save me-2" type="button">
                                 <i class="bi bi-save"></i> Enregistrer
                             </button>
                             <button class="btn btn-primary btn-print" type="button">
@@ -266,10 +261,9 @@
                         </div>
                     </div>
             </div>
-            </form>
 
             <!-- Colonne de droite avec aperçu de la lettre -->
-            <div class="col-lg-6">
+            <div class="result  col-lg-6">
                 <div class="lettre-preview">
                     <div class="expediteur-info">
                         <div id="previewNomPrenom">Ana MUÑOZ MUT</div>
@@ -283,25 +277,22 @@
                         <div id="previewAdresseEntreprise">81 Boulevard de Sébastopol</div>
                     </div>
                     Objet :<span id="previewObjet">demande de stage </span>
-                    <div class="date" id="previewLieuDate">Paris, le Mardi 1 Avril 2014</div>
 
+
+                    <div class="date" id="previewLieuDate">Paris, le Mardi 1 Avril 2014</div>
 
                     <div id="previewFormule">Madame, Monsieur,</div>
 
                     <div class="contenu-lettre" id="previewContenuLettre">
-                                  Actuellement étudiant Affaires Internationales à l'École Supérieure de Commerce Extérieur, je suis à la recherche d'un stage de 5-6 mois au sein d'un établissement bancaire de renommée internationale tel que l'est le vôtre. Je me permets donc de vous proposer mes services.
+                        @if(isset($coverLetterText))
+                                                        {{ $coverLetterText }}
 
-                        L'enseignement que je reçois me prépare à accéder aux différents décisions stratégiques en matière de finance, être ouverte aux autres, soucieuse de me perfectionner. Je sais m'adapter et ai le sens des responsabilités, de l'organisation et de la rigueur, pratiquant trois langues étrangères, j'ai un désir très profond de réussir mon insertion professionnelle, permettant ainsi mon épanouissement aussi bien sur le plan personnel qu'au sein de la société.
-
-                        Faire mon stage au sein de votre établissement serait une grande opportunité de développer mes compétences et serait pour moi la manière la plus efficace de valider ma formation et mon expérience. La formation qui me sera dispensée en alternance sera pour moi l'occasion d'acquérir les savoirs théoriques et pratiques nécessaires pour assurer correctement les tâches qui me seront confiées. Je me tiens à votre disposition pour vous fournir tout complément d'information ou convenir d'une date d'entretien.
-
-                        En espérant que vous répondrez favorablement à ma demande, je vous prie de croire, Madame, Monsieur, à l'assurance de mes salutations distinguées.
+                         @endif
                     </div>
 
                     <div class="signature" id="previewSignature">Ana Muñoz Mut</div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -367,10 +358,6 @@
             });
 
             // Contenu de la lettre
-            document.getElementById('objet').addEventListener('input', function() {
-                document.getElementById('previewObjet').textContent = this.value;
-            });
-
             document.getElementById('formule').addEventListener('input', function() {
                 document.getElementById('previewFormule').textContent = this.value;
             });
@@ -394,7 +381,6 @@
             // Fonctionnalité d'enregistrement
             document.querySelector('.btn-save').addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector('form').submit();
                 // Afficher la modal d'enregistrement
                 const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
                 saveModal.show();

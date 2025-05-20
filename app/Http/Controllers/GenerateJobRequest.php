@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class GenrateCoverLetter extends Controller
+class GenerateJobRequest extends Controller
 {
     /**
      * Affiche le formulaire de génération de lettre de motivation
      */
-   
 
-    /**
-     * Traite la requête vers l'API Azure OpenAI pour générer une lettre de motivation à partir d'un texte.
-     */
-    public function generate(Request $request)
+ public function generate(Request $request)
     {
         // Valider la requête, on attend un champ "description"
         $data = $request->validate([
@@ -71,7 +67,7 @@ class GenrateCoverLetter extends Controller
                     ], 500);
                 }
 
-                return view('page.generateCover', [
+                return view('page.generateJobRequest', [
                     'error' => 'La requête à l\'API Azure OpenAI a échoué.',
                     'details' => $response->json(),
                     'description' => $data['description']
@@ -93,7 +89,7 @@ class GenrateCoverLetter extends Controller
                     ], 500);
                 }
 
-                return view('page.generateCover', [
+                return view('page.generateJobRequest', [
                     'error' => 'Format de réponse inattendu de l\'API.',
                     'details' => $apiResult,
                     'description' => $data['description']
@@ -109,7 +105,7 @@ class GenrateCoverLetter extends Controller
             }
 
             // Sinon, retourner la vue avec le texte de la lettre
-            return view('page.generateCover', [
+            return view('page.generateJobRequest', [
                 'coverLetterText' => $coverLetterText,
                 'description' => $data['description']
             ]);
@@ -121,7 +117,7 @@ class GenrateCoverLetter extends Controller
                 ], 500);
             }
 
-            return view('page.generateCover', [
+            return view('page.generateJobRequest', [
                 'error' => 'Une erreur est survenue: ' . $e->getMessage(),
                 'description' => $data['description']
             ]);
@@ -134,16 +130,25 @@ class GenrateCoverLetter extends Controller
     private function buildSystemPrompt()
     {
         return <<<EOT
-Tu es un expert en rédaction professionnelle spécialisé dans les lettres de motivation.
 
-Ta tâche est d'analyser les informations fournies par l'utilisateur et de générer une lettre de motivation complète,
+
+Tu es un expert en
+
+Analyse les informations fournies par l'utilisateur (profil, compétences, poste, entreprise, etc.) et génère une demande d'emploi claire, convaincante et personnalisée en français.
+
+RÈGLES :
+
+Tu es un expert en rédaction professionnelle spécialisé dans rédaction de demandes d'emploi professionnelles.
+
+Ta tâche est d'analyser les informations fournies par l'utilisateur et de générer génère une demande d'emploi claire complète,
 persuasive et personnalisée en français.
 
 L'utilisateur va te fournir des informations sur son profil professionnel, ses compétences, l'entreprise visée
-et/ou le poste convoité. À partir de ces éléments, tu dois rédiger une lettre de motivation complète.
+et/ou le poste convoité. À partir de ces éléments, tu dois rédiger une demandes d'emploi professionnelles complète.
 
 RÈGLES IMPORTANTES:
-- Élabore une lettre de motivation structurée avec introduction, développement et conclusion
+
+- Élabore une demandes d'emploi  structurée avec introduction, développement et conclusion
 - Mets en avant les compétences et expériences pertinentes pour le poste visé
 - Explique la motivation du candidat et sa valeur ajoutée pour l'entreprise
 - Adopte un ton professionnel mais engageant
@@ -154,7 +159,7 @@ RÈGLES IMPORTANTES:
 - N'inclus pas d'en-tête ni signature, seulement le corps de la
 -- Ne génère pas de ligne d'objet (ex. "Objet : ...") ni de titre
 
-Réponds UNIQUEMENT avec le texte de la lettre de motivation, sans aucun commentaire ou explication.
+Réponds UNIQUEMENT avec le texte de la demandes d'emploi , sans aucun commentaire ou explication.
 EOT;
     }
 }

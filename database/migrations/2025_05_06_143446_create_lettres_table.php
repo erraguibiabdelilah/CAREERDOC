@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('lieuEtDate');
             $table->string('nomEmetteur');
-            $table->string('pronomEmetteur');
             $table->string('email');
             $table->string('tel');
             $table->string('adresseEmetteur');
-            $table->string('entrDestinataire');
+            $table->string('entrepriseName');
             $table->string('adresseEntreprise');
             $table->string('objet');
             $table->text('contenu');

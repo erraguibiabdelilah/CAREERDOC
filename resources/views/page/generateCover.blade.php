@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -223,18 +224,16 @@
                                     <label for="objet">objet</label>
 
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="formule" placeholder="Formule de politesse" value="Madame, Monsieur,">
-                                    <label for="formule">Formule de politesse</label>
-                                </div>
+
 
                                     <div class="mb-3">
                                         <label for="contenuLettre" class="form-label">Contenu de la lettre</label>
                                         <textarea class="form-control" id="contenuLettre" name="contenuLettre" rows="10">
                                         @if(isset($coverLetterText))
                                                         {{ $coverLetterText }}
+                                            @endif
                                         </textarea>
-                                        @endif
+
                                     </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="signature" placeholder="Signature" value="Ana Muñoz Mut">
