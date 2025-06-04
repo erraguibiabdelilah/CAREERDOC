@@ -231,7 +231,7 @@
                                         <textarea class="form-control" id="contenuLettre" name="contenuLettre" rows="10">
                                         @if(isset($coverLetterText))
                                                         {{ $coverLetterText }}
-                                            @endif
+                                        @endif
                                         </textarea>
 
                                     </div>

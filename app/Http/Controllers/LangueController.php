@@ -8,91 +8,66 @@ use Illuminate\Support\Facades\Validator;
 
 class LanguesController extends Controller
 {
-    /**
-     * Affiche la liste des langues (READ)
-     */
-    public function index()
+       public function store(Request $request)
     {
-        $langues = Langues::all();
-        return view('langues.index', compact('langues'));
-    }
-
-    /**
-     * Affiche le formulaire de création (CREATE - UI)
-     */
-    public function create()
-    {
-        return view('langues.create');
-    }
-
-    /**
-     * Enregistre une nouvelle langue (CREATE - Logique)
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'libelle' => 'required|string|max:255',
-            'level' => 'required|string|max:50',
+            'level' => 'required|string|in:Débutant,Intermédiaire,Avancé,Natif',
+            'id_cv' => 'required|exists:cvs,id',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+        // Vérifier que le CV appartient à l'utilisateur connecté
+        $cv = CV::where('id', $request->id_cv)->where('id_user', Auth::id())->firstOrFail();
 
-        Langues::create($request->all());
-
-        return redirect()->route('langues.index')
-            ->with('success', 'Langue créée avec succès.');
-    }
-
-    /**
-     * Affiche une langue spécifique (READ - Détail)
-     */
-    public function show(Langues $langue)
-    {
-        return view('langues.show', compact('langue'));
-    }
-
-    /**
-     * Affiche le formulaire d'édition (UPDATE - UI)
-     */
-    public function edit(Langues $langue)
-    {
-        return view('langues.edit', compact('langue'));
-    }
-
-    /**
-     * Met à jour une langue (UPDATE - Logique)
-     */
-    public function update(Request $request, Langues $langue)
-    {
-        $validator = Validator::make($request->all(), [
-            'libelle' => 'required|string|max:255',
-            'level' => 'required|string|max:50',
+        $langue = Langue::create([
+            'libelle' => $request->libelle,
+            'level' => $request->level,
+            'id_cv' => $request->id_cv,
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $langue->update($request->all());
-
-        return redirect()->route('langues.index')
-            ->with('success', 'Langue mise à jour avec succès.');
+        return response()->json([
+            'success' => true,
+            'langue' => $langue,
+            'message' => 'Langue ajoutée avec succès!'
+        ]);
     }
 
-    /**
-     * Supprime une langue (DELETE)
-     */
-    public function destroy(Langues $langue)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'libelle' => 'required|string|max:255',
+            'level' => 'required|string|in:Débutant,Intermédiaire,Avancé,Natif',
+        ]);
+
+        $langue = Langue::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
+
+        $langue->update([
+            'libelle' => $request->libelle,
+            'level' => $request->level,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'langue' => $langue,
+            'message' => 'Langue mise à jour avec succès!'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $langue = Langue::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
+
         $langue->delete();
 
-        return redirect()->route('langues.index')
-            ->with('success', 'Langue supprimée avec succès.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Langue supprimée avec succès!'
+        ]);
     }
 }
+
+

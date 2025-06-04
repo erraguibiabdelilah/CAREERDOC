@@ -7,59 +7,64 @@ use Illuminate\Http\Request;
 
 class CompetanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'libelle' => 'required|string|max:255',
+            'level' => 'required|integer|min:0|max:100',
+            'id_cv' => 'required|exists:cvs,id',
+        ]);
+
+        // Vérifier que le CV appartient à l'utilisateur connecté
+        $cv = CV::where('id', $request->id_cv)->where('id_user', Auth::id())->firstOrFail();
+
+        $competence = Competence::create([
+            'libelle' => $request->libelle,
+            'level' => $request->level,
+            'id_cv' => $request->id_cv,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'competence' => $competence,
+            'message' => 'Compétence ajoutée avec succès!'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(competance $competance)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'libelle' => 'required|string|max:255',
+            'level' => 'required|integer|min:0|max:100',
+        ]);
+
+        $competence = Competence::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
+
+        $competence->update([
+            'libelle' => $request->libelle,
+            'level' => $request->level,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'competence' => $competence,
+            'message' => 'Compétence mise à jour avec succès!'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(competance $competance)
+    public function destroy($id)
     {
-        //
-    }
+        $competence = Competence::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, competance $competance)
-    {
-        //
-    }
+        $competence->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(competance $competance)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Compétence supprimée avec succès!'
+        ]);
     }
 }

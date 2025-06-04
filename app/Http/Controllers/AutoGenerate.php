@@ -74,7 +74,7 @@ class AutoGenerate extends Controller
                     ], 500);
                 }
 
-                return view('page.cv', [
+                return view('page.templateCV.template1', [
                     'error' => 'La requête à l\'API Azure OpenAI a échoué.',
                     'details' => $response->json(),
                     'description' => $data['description']
@@ -113,7 +113,7 @@ class AutoGenerate extends Controller
                     ], 500);
                 }
 
-                return view('page.cv', [
+                return view('page.templateCV.template1', [
                     'error' => 'Format de réponse inattendu de l\'API.',
                     'details' => $apiResult,
                     'description' => $data['description']
@@ -129,7 +129,7 @@ class AutoGenerate extends Controller
             }
 
             // Sinon, retourner la vue avec le JSON du CV
-            return view('page.cv', [
+            return view('page.templateCV.template1', [
                 'cvData' => json_decode($cvJsonText, true), // Pour l'affichage structuré dans la vue
                 'cvJson' => $cvJsonText, // Pour l'export brut
                 'description' => $data['description']
@@ -142,7 +142,7 @@ class AutoGenerate extends Controller
                 ], 500);
             }
 
-            return view('page.cv', [
+            return view('page.templateCV.template1', [
                 'error' => 'Une erreur est survenue: ' . $e->getMessage(),
                 'description' => $data['description']
             ]);

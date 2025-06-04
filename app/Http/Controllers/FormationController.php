@@ -7,59 +7,72 @@ use Illuminate\Http\Request;
 
 class FormationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'dateDebut' => 'required|date',
+            'dateFin' => 'required|date|after_or_equal:dateDebut',
+            'etablissement' => 'required|string|max:255',
+            'libelle' => 'required|string|max:255',
+            'id_cv' => 'required|exists:cvs,id',
+        ]);
+
+        // Vérifier que le CV appartient à l'utilisateur connecté
+        $cv = CV::where('id', $request->id_cv)->where('id_user', Auth::id())->firstOrFail();
+
+        $formation = Formation::create([
+            'dateDebut' => $request->dateDebut,
+            'dateFin' => $request->dateFin,
+            'etablissement' => $request->etablissement,
+            'libelle' => $request->libelle,
+            'id_cv' => $request->id_cv,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'formation' => $formation,
+            'message' => 'Formation ajoutée avec succès!'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(formation $formation)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'dateDebut' => 'required|date',
+            'dateFin' => 'required|date|after_or_equal:dateDebut',
+            'etablissement' => 'required|string|max:255',
+            'libelle' => 'required|string|max:255',
+        ]);
+
+        $formation = Formation::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
+
+        $formation->update([
+            'dateDebut' => $request->dateDebut,
+            'dateFin' => $request->dateFin,
+            'etablissement' => $request->etablissement,
+            'libelle' => $request->libelle,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'formation' => $formation,
+            'message' => 'Formation mise à jour avec succès!'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(formation $formation)
+    public function destroy($id)
     {
-        //
-    }
+        $formation = Formation::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, formation $formation)
-    {
-        //
-    }
+        $formation->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(formation $formation)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Formation supprimée avec succès!'
+        ]);
     }
 }

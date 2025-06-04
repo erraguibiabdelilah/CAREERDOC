@@ -120,8 +120,6 @@
     <div class="container-fluid py-4">
 
         <div class="row">
-            <form action="{{ route('lettre.store') }}" method="POST">
-                @csrf
             <!-- Colonne de gauche avec formulaires -->
             <div class="col-lg-6 col-form">
                     <!-- Section Expéditeur -->
@@ -257,7 +255,7 @@
                     <!-- Boutons d'action -->
                     <div class="d-flex justify-content-between mb-4">
                         <div>
-                            <button class="btn btn-success btn-save me-2" type="submit">
+                            <button class="btn btn-success btn-save me-2" type="button">
                                 <i class="bi bi-save"></i> Enregistrer
                             </button>
                             <button class="btn btn-primary btn-print" type="button">
@@ -266,7 +264,6 @@
                         </div>
                     </div>
             </div>
-            </form>
 
             <!-- Colonne de droite avec aperçu de la lettre -->
             <div class="col-lg-6">
@@ -301,7 +298,6 @@
                     <div class="signature" id="previewSignature">Ana Muñoz Mut</div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -394,7 +390,6 @@
             // Fonctionnalité d'enregistrement
             document.querySelector('.btn-save').addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector('form').submit();
                 // Afficher la modal d'enregistrement
                 const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
                 saveModal.show();

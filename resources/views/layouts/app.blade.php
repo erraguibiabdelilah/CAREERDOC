@@ -47,7 +47,7 @@
         </ul>
 
 
-        
+
     </div>
 
 
@@ -63,11 +63,11 @@
                     </div>
                     <div class="dropdown">
                         <div class="profile-icon mx-2" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                           A
+                           {{ Auth::user()->name[0] ?? 'A' }}
 
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><p class="dropdown-item" href="#">Hello </i> </p></li>
+                            <li><p class="dropdown-item">Hello {{ Auth::user()->name ?? 'User' }}</p></li>
                             <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout')}}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
@@ -92,7 +92,7 @@
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-bell-fill text-primary me-2"></i>
                                 <div>
-                                    <p class="mb-0 fw-bold">Votre CV a été optimisé</p>
+                                    <p class="mb-0 fw-bold"></p>
                                     <p class="mb-0 text-muted small">Il y a 2 heures</p>
                                 </div>
                             </div>
@@ -136,6 +136,11 @@
 
     <section class="main 1">
         @yield('content')
+    </section>
+
+
+    <section class="main 2 mt-5">
+        @yield('content2')
     </section>
 
 

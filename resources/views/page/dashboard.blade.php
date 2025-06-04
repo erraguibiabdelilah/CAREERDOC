@@ -45,7 +45,7 @@
                     <div class="row container mb-5">
                         <div class="col-md-6">
                             <div class="card modal-card text-center p-3">
-                                <a class="mb-3" href="{{ route('generateCV') }}">
+                                <a class="mb-3" href="{{ route('resumeWithModel') }}">
                                     <i class="bi bi-file-earmark-plus fs-1  bleu"></i>
                                     <h5 class="text-dark">Commencer avec un modèle</h5>
                                 </a>

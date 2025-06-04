@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AutoGenerate;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\GenrateCoverLetter;
 use App\Http\Controllers\GenerateJobRequest;
 use App\Models\User;
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/newCoverLetter',function(){ return view('page.newCover');})->name('coverLetter');
     Route::get('/newResume',function(){ return view('page.newResume');})->name('resume');
     Route::get('/page/NewJobLetter', function () {return view('page.newJobLetter');})->name('newJobLetter');
+    Route::get('/page/newResumeWithModel', function () { return view('page.cvWithModel');})->name('resumeWithModel');
 });
 
 });
@@ -47,7 +49,17 @@ Route::get('/chat', function () {return view('chat');});
 
 Route::post('/openai/chat', [\App\Http\Controllers\OpenAiController::class, 'processChat'])->name('openai.chat');
 Route::get('/auto', [AutoGenerate::class, 'showForm'])->name('home');
+
+
 Route::post('/generate-cv', [AutoGenerate::class, 'generate'])->name('autoCV');
+
+Route::prefix('template')->group(function(){
+    Route::get('/tempalte1', function() {return view('page.templateCV.template1');})->name('template1');
+    Route::get('/tempalte2', function() {return view('page.templateCV.template2');})->name('template2');
+    Route::get('/tempalte3', function() {return view('page.templateCV.template3');})->name('template3');
+    Route::get('/tempalte4', function() {return view('page.templateCV.template4');})->name('template4');
+    Route::get('/tempalte5', function() {return view('page.templateCV.template4');})->name('template5');
+});
 
 // Routes pour la génération de lettre de motivation
 
@@ -59,13 +71,15 @@ Route::get('/Generate/CV', function(){
 
 
 
+Route::get('/checkout', function(){return view('page.protemplate.paiment');})->name('checkout');
 
 
 
 Route::get('/cvWithModel', function(){
-    return view('cv.personalInfo');
+
 })->name('cvWithModel');
 
+Route::post('/savePaiment',[NotificationController::class ,'create'])->name('notifications.create');
 
 
 

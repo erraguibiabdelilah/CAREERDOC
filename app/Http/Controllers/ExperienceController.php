@@ -6,60 +6,68 @@ use App\Models\experience;
 use Illuminate\Http\Request;
 
 class ExperienceController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+{ public function store(Request $request)
     {
-        //
+        $request->validate([
+            'period' => 'required|string|max:255',
+            'entreprise' => 'required|string|max:255',
+            'poste' => 'required|string|max:255',
+            'id_cv' => 'required|exists:cvs,id',
+        ]);
+
+        // Vérifier que le CV appartient à l'utilisateur connecté
+        $cv = CV::where('id', $request->id_cv)->where('id_user', Auth::id())->firstOrFail();
+
+        $experience = Experience::create([
+            'period' => $request->period,
+            'entreprise' => $request->entreprise,
+            'poste' => $request->poste,
+            'id_cv' => $request->id_cv,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'experience' => $experience,
+            'message' => 'Expérience ajoutée avec succès!'
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'period' => 'required|string|max:255',
+            'entreprise' => 'required|string|max:255',
+            'poste' => 'required|string|max:255',
+        ]);
+
+        $experience = Experience::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
+
+        $experience->update([
+            'period' => $request->period,
+            'entreprise' => $request->entreprise,
+            'poste' => $request->poste,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'experience' => $experience,
+            'message' => 'Expérience mise à jour avec succès!'
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function destroy($id)
     {
-        //
-    }
+        $experience = Experience::whereHas('cv', function($query) {
+            $query->where('id_user', Auth::id());
+        })->findOrFail($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(experience $experience)
-    {
-        //
-    }
+        $experience->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(experience $experience)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, experience $experience)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(experience $experience)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Expérience supprimée avec succès!'
+        ]);
     }
 }

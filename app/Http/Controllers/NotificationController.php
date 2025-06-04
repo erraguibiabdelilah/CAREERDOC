@@ -7,28 +7,38 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   public function create(Request $request)
     {
-        //
+        $request->validate([
+
+            'contenu' => 'required|string|max:500',
+            'id_user' => 'nullable|exists:users,id',
+        ]);
+
+
+
+        Notification::create([
+
+            'contenu' => $request->contenu,
+            'id_user' => $request->id_user ,
+
+        ]);
+
+        return redirect()->back()->with('success', 'Notification créée avec succès');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Afficher le dashboard utilisateur avec ses notifications
      */
-    public function create()
+    public function findByUser()
     {
-        //
-    }
+        $notifications = Notification::where('id_user', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $count = $notifications->where('estLu', false)->count();
+
+        return view('page.cv',compact('notifications','count'));
     }
 
     /**
