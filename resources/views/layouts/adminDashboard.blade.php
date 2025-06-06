@@ -1,340 +1,135 @@
-<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
-<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
-<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
-<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CV Designer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/dash.css') }}" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="/logo.png" alt="CV Designer.ai" class="img-fluid" width="60px" height="60px" />
+            <span class="logo-span">CAREERDOC</span>
+        </div>
 
-<div class="grey-bg container-fluid">
-  <section id="minimal-statistics">
-    <div class="row">
-      <div class="col-12 mt-3 mb-1">
-        <h4 class="text-uppercase">Minimal Statistics Cards</h4>
-        <p>Statistics on minimal cards.</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <i class="icon-pencil primary font-large-2 float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>278</h3>
-                  <span>New Posts</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <i class="icon-speech warning font-large-2 float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>156</h3>
-                  <span>New Comments</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <i class="icon-graph success font-large-2 float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>64.89 %</h3>
-                  <span>Bounce Rate</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <i class="icon-pointer danger font-large-2 float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>423</h3>
-                  <span>Total Visits</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.dashboard')}}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('adminManagement') }}">
+                    <i class="bi bi-people"></i> Gestion Admins
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.gestiontemplates') }}">
+                    <i class="bi bi-layout-text-sidebar-reverse"></i> Gestion Templates
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="danger">278</h3>
-                  <span>New Projects</span>
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <div class="container-fluid p-0">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="tab-header"></div>
+                <div class="d-flex align-items-center">
+                    <div class="notification-badge me-2 me-lg-3 mx-1" id="notificationBell" data-bs-toggle="modal" data-bs-target="#notificationsModal">
+                        <i class="bi bi-bell fs-4"></i>
+                    </div>
+                    <div class="dropdown">
+                        <div class="profile-icon mx-2" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                           A
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><p class="dropdown-item">Hello</p></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="align-self-center">
-                  <i class="icon-rocket danger font-large-2 float-right"></i>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="success">156</h3>
-                  <span>New Clients</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-user success font-large-2 float-right"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="warning">64.89 %</h3>
-                  <span>Conversion Rate</span>
+            <!-- Notifications Modal -->
+            <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="notification-list">
+                                <div class="notification-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-bell-fill text-primary me-2"></i>
+                                        <div>
+                                            <p class="mb-0 fw-bold">Votre CV a été optimisé</p>
+                                            <p class="mb-0 text-muted small">Il y a 2 heures</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-bell-fill text-primary me-2"></i>
+                                        <div>
+                                            <p class="mb-0 fw-bold">Nouvelle offre d'emploi correspondant à votre profil</p>
+                                            <p class="mb-0 text-muted small">Il y a 3 heures</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-bell-fill text-primary me-2"></i>
+                                        <div>
+                                            <p class="mb-0 fw-bold">Rappel: Entretien prévu demain</p>
+                                            <p class="mb-0 text-muted small">Il y a 1 jour</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-bell-fill text-primary me-2"></i>
+                                        <div>
+                                            <p class="mb-0 fw-bold">Votre lettre de motivation a été téléchargée</p>
+                                            <p class="mb-0 text-muted small">Il y a 2 jours</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="button" class="btn btn-primary">Marquer comme lu</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="align-self-center">
-                  <i class="icon-pie-chart warning font-large-2 float-right"></i>
-                </div>
-              </div>
             </div>
-          </div>
+
+            <section class="main 1">
+                @yield('content')
+            </section>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="primary">423</h3>
-                  <span>Support Tickets</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-support primary font-large-2 float-right"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="primary">278</h3>
-                  <span>New Posts</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-book-open primary font-large-2 float-right"></i>
-                </div>
-              </div>
-              <div class="progress mt-1 mb-0" style="height: 7px;">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="warning">156</h3>
-                  <span>New Comments</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-bubbles warning font-large-2 float-right"></i>
-                </div>
-              </div>
-              <div class="progress mt-1 mb-0" style="height: 7px;">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="success">64.89 %</h3>
-                  <span>Bounce Rate</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-cup success font-large-2 float-right"></i>
-                </div>
-              </div>
-              <div class="progress mt-1 mb-0" style="height: 7px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="media-body text-left">
-                  <h3 class="danger">423</h3>
-                  <span>Total Visits</span>
-                </div>
-                <div class="align-self-center">
-                  <i class="icon-direction danger font-large-2 float-right"></i>
-                </div>
-              </div>
-              <div class="progress mt-1 mb-0" style="height: 7px;">
-                <div class="progress-bar bg-danger" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="stats-subtitle">
-  <div class="row">
-    <div class="col-12 mt-3 mb-1">
-      <h4 class="text-uppercase">Statistics With Subtitle</h4>
-      <p>Statistics on minimal cards with Title &amp; Sub Title.</p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-6 col-md-12">
-      <div class="card overflow-hidden">
-        <div class="card-content">
-          <div class="card-body cleartfix">
-            <div class="media align-items-stretch">
-              <div class="align-self-center">
-                <i class="icon-pencil primary font-large-2 mr-2"></i>
-              </div>
-              <div class="media-body">
-                <h4>Total Posts</h4>
-                <span>Monthly blog posts</span>
-              </div>
-              <div class="align-self-center">
-                <h1>18,000</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-6 col-md-12">
-      <div class="card">
-        <div class="card-content">
-          <div class="card-body cleartfix">
-            <div class="media align-items-stretch">
-              <div class="align-self-center">
-                <i class="icon-speech warning font-large-2 mr-2"></i>
-              </div>
-              <div class="media-body">
-                <h4>Total Comments</h4>
-                <span>Monthly blog comments</span>
-              </div>
-              <div class="align-self-center">
-                <h1>84,695</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-6 col-md-12">
-      <div class="card">
-        <div class="card-content">
-          <div class="card-body cleartfix">
-            <div class="media align-items-stretch">
-              <div class="align-self-center">
-                <h1 class="mr-2">$76,456.00</h1>
-              </div>
-              <div class="media-body">
-                <h4>Total Sales</h4>
-                <span>Monthly Sales Amount</span>
-              </div>
-              <div class="align-self-center">
-                <i class="icon-heart danger font-large-2"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-6 col-md-12">
-      <div class="card">
-        <div class="card-content">
-          <div class="card-body cleartfix">
-            <div class="media align-items-stretch">
-              <div class="align-self-center">
-                <h1 class="mr-2">$36,000.00</h1>
-              </div>
-              <div class="media-body">
-                <h4>Total Cost</h4>
-                <span>Monthly Cost</span>
-              </div>
-              <div class="align-self-center">
-                <i class="icon-wallet success font-large-2"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialisation des tooltips et popovers Bootstrap si nécessaire
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ajoutez ici d'autres initialisations si besoin
+        });
+    </script>
+</body>
+</html>

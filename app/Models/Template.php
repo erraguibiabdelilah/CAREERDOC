@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class template extends Model
 {
-    //
+     protected $fillable = ['name', 'type', 'description'];
 }

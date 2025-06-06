@@ -2,12 +2,37 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutoGenerate;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\GenrateCoverLetter;
 use App\Http\Controllers\GenerateJobRequest;
+use App\Http\Controllers\LettreController;
+use App\Http\Controllers\JobRequestController;
+use App\Models\Admin;
 use App\Models\User;
-//landign page
+
+use App\Http\Controllers\TemplateController;
+
+
+Route::resource('templates', TemplateController::class)->names('admin.templates');
+
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('admins', AdminController::class)->except(['show']);
+});
+
+
+Route::middleware('auth:admin')->group(function () {
+    Route::get('gestionadmins', function () {
+        $admins = Admin::all();
+        return view('admin.gestionadmins', compact('admins'));
+    })->name('adminManagement');
+});
+
+Route::get('/admin/gestiontemplates', [TemplateController::class, 'index'])->middleware('auth:admin')->name('admin.gestiontemplates');
+
+
+
 
 Route::post('/lettre/store', [LettreController::class, 'store'])->name('lettre.store')->middleware('auth');
 Route::post('/jobRequest/store', [JobRequestController::class, 'store'])->name('JobRequest.store')->middleware('auth');
@@ -33,9 +58,9 @@ Route::match(['get', 'post'], '/logout',[AuthController::class, 'logout'])->name
 
 
 
+// Routes protégées pour utilisateur connecté
 Route::middleware('auth')->group(function () {
 
-    Route::get('/admin/dashboard',[AuthController::class , 'adminDashboard'])->name('adminDashboard');
     Route::prefix('page')->group(function () {
     Route::get('/myDocument', function(){ return view('page.dashboard');})->name('dashboard');
     Route::get('/newCoverLetter',function(){ return view('page.newCover');})->name('coverLetter');
